@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bebuchiiiii's Little Love Garden</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#fff7fc;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#54263e;display:flex;justify-content:center;padding:24px 12px}
+.wrap{width:100%;max-width:720px;text-align:center}
+.title{font-size:clamp(27px,6vw,42px);font-weight:900;margin:0;letter-spacing:-.5px}
+.subtitle{margin:5px 0 14px;color:#87516b;font-size:14px}
+.scene{position:relative;min-height:470px;overflow:hidden;border:2px solid #f4c3da;border-radius:28px;background:linear-gradient(#fff7fc 0%,#ffeaf4 53%,#e8f8df 54%,#c9e8ae 100%);box-shadow:0 8px 28px rgba(157,23,77,.10);touch-action:manipulation}
+.sun{position:absolute;width:82px;height:82px;border-radius:50%;background:#ffe4a3;right:35px;top:28px;box-shadow:0 0 0 12px rgba(255,228,163,.18),0 0 40px rgba(255,204,100,.35)}
+.cloud{position:absolute;color:white;font-size:44px;opacity:.72;animation:float 7s ease-in-out infinite}
+.c1{left:8%;top:55px}.c2{right:24%;top:105px;font-size:32px;animation-delay:-3s}
+.ground{position:absolute;left:0;right:0;bottom:0;height:190px;pointer-events:none;background:radial-gradient(ellipse at 15% 100%,#b7db94 0 25%,transparent 26%),radial-gradient(ellipse at 85% 100%,#b7db94 0 27%,transparent 28%)}
+.character{position:absolute;bottom:112px;left:50%;transform:translateX(-50%);font-size:66px;filter:drop-shadow(0 5px 5px rgba(70,40,40,.15));transition:left .18s ease;z-index:5;user-select:none}
+.object{position:absolute;border:0;background:transparent;font-size:39px;cursor:pointer;padding:8px;min-width:50px;min-height:50px;transition:transform .2s ease;z-index:4}
+.object:active{transform:scale(1.25)}
+.flower1{left:12%;bottom:95px}.flower2{left:32%;bottom:130px}.flower3{right:13%;bottom:102px}.butterfly{left:68%;top:170px}.star{right:20%;top:65px}.bunny{left:48%;bottom:66px;font-size:48px}.letter{right:7%;bottom:48px;font-size:43px}
+.sparkle{position:absolute;pointer-events:none;font-size:22px;animation:spark 900ms ease-out forwards;z-index:20}
+.panel{margin:12px auto 0;background:#fff4fa;border:1px solid #f2c7dc;border-radius:18px;padding:11px 14px;max-width:600px}
+.progress{height:9px;background:#f4d9e6;border-radius:99px;overflow:hidden;margin-top:8px}.bar{height:100%;width:0;background:linear-gradient(90deg,#f06aa8,#b83b72);transition:width .35s ease}
+.message{font-weight:800;min-height:23px;color:#9a3561}
+.controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+button.action{border:0;background:#f06aa8;color:#fff;border-radius:13px;padding:11px 17px;font-weight:800;cursor:pointer;min-height:44px}
+button.action:focus-visible,.object:focus-visible{outline:3px solid #831843;outline-offset:2px}
+.modal{position:absolute;inset:0;background:rgba(91,30,59,.48);display:none;align-items:center;justify-content:center;padding:22px;z-index:50}
+.modal.show{display:flex}
+.letterbox{max-width:480px;background:#fff8fc;border:2px solid #f3bed7;border-radius:25px;padding:26px 20px;box-shadow:0 15px 45px rgba(60,10,35,.25);animation:pop .35s ease}
+.letterbox h3{font-size:28px;margin:0 0 9px}.letterbox p{line-height:1.65;margin:8px 0;color:#69334d}.signature{font-weight:900;color:#b83b72;font-size:18px;margin-top:16px}
+@keyframes float{50%{transform:translateY(-10px)}}@keyframes spark{0%{opacity:1;transform:scale(.5) translateY(0)}100%{opacity:0;transform:scale(1.5) translateY(-55px)}}@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+@media(max-width:500px){body{padding:12px 8px}.scene{min-height:440px}.character{font-size:57px}.object{font-size:33px}.sun{width:65px;height:65px;right:20px}.ground{height:175px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1 class="title">🌸 Bebuchiiiii's Little Love Garden 🌸</h1>
+<p class="subtitle">A tiny magical place made by your Baby Boy, just for you. 💗</p>
+
+<div class="scene" id="scene" aria-label="Bebuchiiiii's interactive love garden">
+  <div class="sun">☀️</div>
+  <div class="cloud c1">☁️</div>
+  <div class="cloud c2">☁️</div>
+  <div class="ground"></div>
+  <div class="character" id="char">👧🏻</div>
+
+  <button class="object flower1" data-kind="flower" aria-label="Pink flower">🌷</button>
+  <button class="object flower2" data-kind="flower2" aria-label="White flower">🌼</button>
+  <button class="object flower3" data-kind="flower3" aria-label="Rose">🌹</button>
+  <button class="object butterfly" data-kind="butterfly" aria-label="Butterfly">🦋</button>
+  <button class="object star" data-kind="star" aria-label="Star">⭐</button>
+  <button class="object bunny" data-kind="bunny" aria-label="Cute bunny">🐰</button>
+  <button class="object letter" data-kind="letter" aria-label="Love letter">💌</button>
+
+  <div class="modal" id="modal">
+    <div class="letterbox">
+      <h3>💌 A Letter From Baby Boy</h3>
+      <p>Bebuchiiiii, you found all the little pieces of love I hid around your garden. 🥹💕</p>
+      <p>If I could build you a whole world, I'd fill it with flowers, butterflies, stars, warm hugs and a thousand little reasons to smile.</p>
+      <p>But even that wouldn't be enough to show you how special you are to me.</p>
+      <p class="signature">Forever your Baby Boy ❤️</p>
+      <button class="action" id="close" type="button">Close with a kiss 😘</button>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="message" id="message">Explore the garden and discover all 7 little surprises. 🌷</div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="controls">
+    <button class="action" id="reset" type="button">🌸 Start Again</button>
+    <button class="action" id="move" type="button">✨ Move Around</button>
+  </div>
+</div>
+</div>
+
+<script>
+(() => {
+  const scene=document.getElementById('scene');
+  const char=document.getElementById('char');
+  const message=document.getElementById('message');
+  const bar=document.getElementById('bar');
+  const modal=document.getElementById('modal');
+  const close=document.getElementById('close');
+  const reset=document.getElementById('reset');
+  const move=document.getElementById('move');
+
+  const found=new Set();
+  const texts={
+    flower:'🌷 A flower bloomed because Bebuchiiiii touched it! You make everything more beautiful. 💕',
+    flower2:'🌼 A little flower says: Baby Boy is sending you the biggest hug in the world! 🤗',
+    flower3:'🌹 This rose is for the most precious Bebuchiiiii. 🌹',
+    butterfly:'🦋 The butterfly says: you are the prettiest little butterfly in Baby Boy\\'s world.',
+    star:'⭐ You found a star! Baby Boy wishes he could give you every star in the sky.',
+    bunny:'🐰 The bunny has a secret: someone loves you VERY, VERY much. 🥹❤️',
+    letter:'💌 There is one final surprise waiting for you...'
+  };
+
+  function sparkle(x,y){
+    const s=document.createElement('span');
+    s.className='sparkle';
+    s.textContent=['💗','✨','💕','🌸'][Math.floor(Math.random()*4)];
+    s.style.left=x+'px';
+    s.style.top=y+'px';
+    scene.appendChild(s);
+    setTimeout(()=>s.remove(),900);
+  }
+
+  function update(){
+    bar.style.width=(found.size/7*100)+'%';
+    if(found.size===7){
+      message.textContent='🌟 You found everything! The garden has one final secret for you... 💌';
+      setTimeout(()=>modal.classList.add('show'),500);
+    }
+  }
+
+  document.querySelectorAll('.object').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const kind=btn.dataset.kind;
+      if(kind==='letter' && found.size<6){
+        message.textContent='💌 Not yet! Find all the other little surprises first. 🥰';
+        return;
+      }
+      if(!found.has(kind)){
+        found.add(kind);
+        btn.style.transform='scale(1.35)';
+        setTimeout(()=>btn.style.transform='',250);
+        const r=btn.getBoundingClientRect();
+        const sr=scene.getBoundingClientRect();
+        sparkle(r.left-sr.left+20,r.top-sr.top+10);
+        message.textContent=texts[kind]||'💕 A little bit of love for Bebuchiiiii!';
+        update();
+      }else{
+        message.textContent=texts[kind]||'💕 You already found this little surprise!';
+      }
+    });
+  });
+
+  let pos=.5;
+  function moveChar(dir){
+    pos=Math.max(.08,Math.min(.92,pos+dir*.08));
+    char.style.left=(pos*100)+'%';
+    sparkle(pos*scene.clientWidth,scene.clientHeight-150);
+    message.textContent=dir>0?'Bebuchiiiii is exploring to the right! 🌸':'Bebuchiiiii is exploring to the left! 🌷';
+  }
+
+  move.addEventListener('click',()=>moveChar(Math.random()>.5?1:-1));
+
+  scene.addEventListener('pointerdown',e=>{
+    if(e.target.closest('.object') || e.target.closest('.modal')) return;
+    const r=scene.getBoundingClientRect();
+    moveChar(e.clientX<r.left+r.width/2?-1:1);
+  });
+
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowLeft') moveChar(-1);
+    if(e.key==='ArrowRight') moveChar(1);
+  });
+
+  reset.addEventListener('click',()=>{
+    found.clear();
+    document.querySelectorAll('.object').forEach(b=>b.style.transform='');
+    bar.style.width='0%';
+    message.textContent='Explore the garden and discover all 7 little surprises. 🌷';
+    modal.classList.remove('show');
+    pos=.5;
+    char.style.left='50%';
+  });
+
+  close.addEventListener('click',()=>modal.classList.remove('show'));
+  modal.addEventListener('click',e=>{
+    if(e.target===modal) modal.classList.remove('show');
+  });
+})();
+</script>
+</body>
+</html>
